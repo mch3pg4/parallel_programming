@@ -52,15 +52,11 @@ double multiplyInnerLoop(int threads, int N) {
     double start = omp_get_wtime(); // Record start time
 
     for (int i = 0; i < N; ++i) {
+      #pragma omp parallel for 
         for (int j = 0; j < N; ++j) {
-            double sum = 0.0;
-            
-            #pragma omp parallel for reduction(+:sum)
             for (int k = 0; k < N; ++k) {
-                sum += A[i][k] * B[k][j];
+                C[i][j] += A[i][k] * B[k][j];
             }
-            
-            C[i][j] = sum;
         }
     }
 
